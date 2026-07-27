@@ -1,0 +1,565 @@
+!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<title>शुभ तीज निमंत्रण</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Cormorant+Garamond:wght@500;600&display=swap');
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 30px;
+    background: #041713;
+    display: flex;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+  }
+
+  .card {
+    position: relative;
+    width: 440px;
+    background: radial-gradient(ellipse at center, #0e4a40 0%, #0a3229 70%, #061f19 100%);
+    border: 2px solid #d9b45f;
+    outline: 1px solid #d9b45f;
+    outline-offset: 6px;
+    border-radius: 6px;
+    padding: 42px 32px 48px;
+    overflow: hidden;
+    color: #f3ead9;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+  }
+
+  /* Rain / Droplet Animation Container */
+  .rain-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+    overflow: hidden;
+  }
+
+  .droplet {
+    position: absolute;
+    background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(217,180,95,0.2));
+    width: 3px;
+    height: 12px;
+    border-radius: 50%;
+    opacity: 0;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(-20px) scale(0.6);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateY(600px) scale(1);
+      opacity: 0;
+    }
+  }
+
+  .vine-side {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    z-index: 1;
+    opacity: 0.9;
+  }
+  .vine-left { left: 2px; }
+  .vine-right { right: 2px; transform: scaleX(-1); }
+
+  .flower-corner {
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .flower-corner svg { width: 100%; height: 100%; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+  .top-left { top: -45px; left: -45px; }
+  .top-right { top: -45px; right: -45px; transform: scaleX(-1); }
+  .bottom-left { bottom: -45px; left: -45px; transform: scaleY(-1); }
+  .bottom-right { bottom: -45px; right: -45px; transform: scale(-1,-1); }
+
+  .content { position: relative; z-index: 3; }
+
+  /* Top Border matching exact corner pattern/colors */
+  .top-edge-floral {
+    position: absolute;
+    top: -45px;
+    left: 0;
+    right: 0;
+    height: 120px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .top-edge-floral svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+
+  .song-banner {
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    color: #f1c40f;
+    letter-spacing: 1px;
+    margin: 12px 0 10px;
+    text-shadow: 0 0 8px rgba(241,196,15,0.3);
+  }
+
+  .swing-wrap { margin: 10px auto 8px; width: 220px; filter: drop-shadow(0 5px 8px rgba(0,0,0,0.4)); }
+
+  .subtitle { font-size: 14px; letter-spacing: 0.5px; color: #eae2d0; margin: 2px 0 2px; }
+
+  .event-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: #ffffff;
+    margin: 2px 0 10px;
+    text-transform: uppercase;
+  }
+
+  .script-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 54px;
+    color: #e9b949;
+    text-shadow: 0 0 15px rgba(233,185,73,0.5);
+    margin: 2px 0 8px;
+    line-height: 1;
+  }
+
+  .on-label { letter-spacing: 3px; font-size: 13px; color: #d8cfba; margin-bottom: 6px; }
+
+  .date-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1.5px solid #d9b45f;
+    border-radius: 30px;
+    padding: 5px 16px;
+    font-size: 17px;
+    color: #f3ead9;
+    margin-bottom: 6px;
+    background: rgba(10, 50, 41, 0.6);
+  }
+
+  .date-pill .day-badge {
+    background: #e9b949;
+    color: #0a3229;
+    font-weight: 700;
+    font-size: 19px;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .year { font-size: 15px; letter-spacing: 2px; margin: 6px 0 2px; }
+  .time {
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+  }
+
+  .place-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: #e9b949;
+    margin-bottom: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  .address { font-size: 13px; letter-spacing: 1px; color: #ece4d3; margin-bottom: 10px; }
+
+  .divider { color: #d9b45f; font-size: 12px; letter-spacing: 4px; margin: 8px 0; }
+
+  .footer-note { font-style: italic; font-size: 14px; color: #f3ead9; }
+
+  .editable { border-radius: 4px; cursor: text; }
+  .editable:hover, .editable:focus {
+    outline: 1px dashed #e9b949;
+    background: rgba(233,185,73,0.08);
+  }
+
+  /* Music Control Floating Button */
+  .music-control {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #0e4a40;
+    border: 2px solid #d9b45f;
+    color: #f3ead9;
+    padding: 10px 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s;
+  }
+  .music-control:hover {
+    background: #136355;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .card { outline: none; box-shadow: none; }
+    .rain-container { display: none; }
+    .music-control { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background Audio Element with Autoplay -->
+<audio id="bgMusic" loop autoplay>
+  <source src="aayo-aayo-teej-tyohar.mp3" type="audio/mpeg">
+  आपका ब्राउज़र ऑडियो तत्व का समर्थन नहीं करता है।
+</audio>
+
+<div class="card">
+
+  <!-- Dynamic Rain / Floral Droplets Container -->
+  <div class="rain-container" id="rainContainer"></div>
+
+  <!-- side vines -->
+  <div class="vine-side vine-left">
+    <svg viewBox="0 0 30 520" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M15,0 Q3,40 15,80 Q27,120 15,160 Q3,200 15,240 Q27,280 15,320 Q3,360 15,400 Q27,440 15,480 Q3,510 15,520" stroke="#4f8f5d" stroke-width="2.5" fill="none"/>
+      <g>
+        <ellipse cx="9" cy="20" rx="6" ry="4" fill="#6cae7a" transform="rotate(-30 9 20)"/>
+        <ellipse cx="21" cy="45" rx="6" ry="4" fill="#5f9e6d" transform="rotate(30 21 45)"/>
+        <ellipse cx="8" cy="75" rx="6" ry="4" fill="#6cae7a" transform="rotate(-25 8 75)"/>
+        <ellipse cx="22" cy="105" rx="6" ry="4" fill="#5f9e6d" transform="rotate(25 22 105)"/>
+        <ellipse cx="8" cy="135" rx="6" ry="4" fill="#6cae7a" transform="rotate(-30 8 135)"/>
+        <ellipse cx="22" cy="165" rx="6" ry="4" fill="#5f9e6d" transform="rotate(30 22 165)"/>
+        <ellipse cx="8" cy="195" rx="6" ry="4" fill="#6cae7a" transform="rotate(-25 8 195)"/>
+        <ellipse cx="22" cy="225" rx="6" ry="4" fill="#5f9e6d" transform="rotate(25 22 225)"/>
+        <ellipse cx="8" cy="255" rx="6" ry="4" fill="#6cae7a" transform="rotate(-30 8 255)"/>
+        <ellipse cx="22" cy="285" rx="6" ry="4" fill="#5f9e6d" transform="rotate(30 22 285)"/>
+        <ellipse cx="8" cy="315" rx="6" ry="4" fill="#6cae7a" transform="rotate(-25 8 315)"/>
+        <ellipse cx="22" cy="345" rx="6" ry="4" fill="#5f9e6d" transform="rotate(25 22 345)"/>
+        <ellipse cx="8" cy="375" rx="6" ry="4" fill="#6cae7a" transform="rotate(-30 8 375)"/>
+        <ellipse cx="22" cy="405" rx="6" ry="4" fill="#5f9e6d" transform="rotate(30 22 405)"/>
+        <ellipse cx="8" cy="435" rx="6" ry="4" fill="#6cae7a" transform="rotate(-25 8 435)"/>
+        <ellipse cx="22" cy="465" rx="6" ry="4" fill="#5f9e6d" transform="rotate(25 22 465)"/>
+      </g>
+      <g fill="#89c496">
+        <circle cx="15" cy="10" r="3.2"/><circle cx="15" cy="60" r="3.2"/><circle cx="15" cy="90" r="3.2"/>
+        <circle cx="15" cy="120" r="3.2"/><circle cx="15" cy="150" r="3.2"/><circle cx="15" cy="180" r="3.2"/>
+        <circle cx="15" cy="210" r="3.2"/><circle cx="15" cy="240" r="3.2"/><circle cx="15" cy="270" r="3.2"/>
+        <circle cx="15" cy="300" r="3.2"/><circle cx="15" cy="330" r="3.2"/><circle cx="15" cy="360" r="3.2"/>
+        <circle cx="15" cy="390" r="3.2"/><circle cx="15" cy="420" r="3.2"/><circle cx="15" cy="450" r="3.2"/><circle cx="15" cy="480" r="3.2"/>
+      </g>
+    </svg>
+  </div>
+  <div class="vine-side vine-right">
+    <svg viewBox="0 0 30 520" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M15,0 Q3,40 15,80 Q27,120 15,160 Q3,200 15,240 Q27,280 15,320 Q3,360 15,400 Q27,440 15,480 Q3,510 15,520" stroke="#4f8f5d" stroke-width="2.5" fill="none"/>
+      <g>
+        <ellipse cx="9" cy="20" rx="6" ry="4" fill="#6cae7a" transform="rotate(-30 9 20)"/>
+        <ellipse cx="21" cy="45" rx="6" ry="4" fill="#5f9e6d" transform="rotate(30 21 45)"/>
+        <ellipse cx="8" cy="75" rx="6" ry="4" fill="#6cae7a" transform="rotate(-25 8 75)"/>
+        <ellipse cx="22" cy="105" rx="6" ry="4" fill="#5f9e6d" transform="rotate(25 22 105)"/>
+        <ellipse cx="8" cy="135" rx="6" ry="4" fill="#6cae7a" transform="rotate(-30 8 135)"/>
+        <ellipse cx="22" cy="165" rx="6" ry="4" fill="#5f9e6d" transform="rotate(30 22 165)"/>
+        <ellipse cx="8" cy="195" rx="6" ry="4" fill="#6cae7a" transform="rotate(-25 8 195)"/>
+        <ellipse cx="22" cy="225" rx="6" ry="4" fill="#5f9e6d" transform="rotate(25 22 225)"/>
+        <ellipse cx="8" cy="255" rx="6" ry="4" fill="#6cae7a" transform="rotate(-30 8 255)"/>
+        <ellipse cx="22" cy="285" rx="6" ry="4" fill="#5f9e6d" transform="rotate(30 22 285)"/>
+        <ellipse cx="8" cy="315" rx="6" ry="4" fill="#6cae7a" transform="rotate(-25 8 315)"/>
+        <ellipse cx="22" cy="345" rx="6" ry="4" fill="#5f9e6d" transform="rotate(25 22 345)"/>
+        <ellipse cx="8" cy="375" rx="6" ry="4" fill="#6cae7a" transform="rotate(-30 8 375)"/>
+        <ellipse cx="22" cy="405" rx="6" ry="4" fill="#5f9e6d" transform="rotate(30 22 405)"/>
+        <ellipse cx="8" cy="435" rx="6" ry="4" fill="#6cae7a" transform="rotate(-25 8 435)"/>
+        <ellipse cx="22" cy="465" rx="6" ry="4" fill="#5f9e6d" transform="rotate(25 22 465)"/>
+      </g>
+      <g fill="#89c496">
+        <circle cx="15" cy="10" r="3.2"/><circle cx="15" cy="60" r="3.2"/><circle cx="15" cy="90" r="3.2"/>
+        <circle cx="15" cy="120" r="3.2"/><circle cx="15" cy="150" r="3.2"/><circle cx="15" cy="180" r="3.2"/>
+        <circle cx="15" cy="210" r="3.2"/><circle cx="15" cy="240" r="3.2"/><circle cx="15" cy="270" r="3.2"/>
+        <circle cx="15" cy="300" r="3.2"/><circle cx="15" cy="330" r="3.2"/><circle cx="15" cy="360" r="3.2"/>
+        <circle cx="15" cy="390" r="3.2"/><circle cx="15" cy="420" r="3.2"/><circle cx="15" cy="450" r="3.2"/><circle cx="15" cy="480" r="3.2"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Shared Floral Assets & Corner Definitions -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <g id="succulent-rosette">
+        <g>
+          <path d="M0,-34 C10,-30 16,-20 14,-8 C12,2 4,6 0,4 C-4,6 -12,2 -14,-8 C-16,-20 -10,-30 0,-34Z" fill="#75b094"/>
+          <path d="M24,-24 C32,-18 34,-6 28,4 C24,10 16,10 12,4 C8,-2 10,-14 16,-20 C19,-23 21,-24 24,-24Z" fill="#8bc1a4"/>
+          <path d="M-24,-24 C-32,-18 -34,-6 -28,4 C-24,10 -16,10 -12,4 C-8,-2 -10,-14 -16,-20 C-19,-23 -21,-24 -24,-24Z" fill="#8bc1a4"/>
+          <path d="M28,10 C36,16 34,28 24,32 C16,35 8,30 8,22 C8,14 16,8 22,8 C24,8 26,9 28,10Z" fill="#a4d1bd"/>
+          <path d="M-28,10 C-36,16 -34,28 -24,32 C-16,35 -8,30 -8,22 C-8,14 -16,8 -22,8 C-24,8 -26,9 -28,10Z" fill="#a4d1bd"/>
+        </g>
+        <g>
+          <path d="M0,-22 C7,-19 11,-12 9,-4 C7,2 3,4 0,3 C-3,4 -7,2 -9,-4 C-11,-12 -7,-19 0,-22Z" fill="#b9e1cf"/>
+          <path d="M14,-14 C19,-10 20,-2 15,3 C11,7 5,6 3,1 C1,-4 4,-11 9,-14 C11,-15 12,-15 14,-14Z" fill="#d2eee1"/>
+          <path d="M-14,-14 C-19,-10 -20,-2 -15,3 C-11,7 -5,6 -3,1 C-1,-4 -4,-11 -9,-14 C-11,-15 -12,-15 -14,-14Z" fill="#d2eee1"/>
+        </g>
+        <circle cx="0" cy="-2" r="5" fill="#eef7f0"/>
+      </g>
+
+      <g id="rose-bloom">
+        <circle r="18" fill="#d89fb6"/>
+        <path d="M0,-16 C10,-14 16,-7 14,3 C12,11 4,14 0,12 C-4,14 -12,11 -14,3 C-16,-7 -10,-14 0,-16Z" fill="#e8c2d5"/>
+        <path d="M0,-9 C6,-8 9,-4 7,3 C6,7 1,8 0,7 C-1,8 -6,7 -7,3 C-9,-4 -6,-8 0,-9Z" fill="#f5e0ec"/>
+        <circle r="3" fill="#b82a5c"/>
+      </g>
+
+      <g id="small-blossom">
+        <g fill="#fff6e0">
+          <ellipse cx="0" cy="-6" rx="4.5" ry="6.5"/>
+          <ellipse cx="5.7" cy="-1.8" rx="4.5" ry="6.5" transform="rotate(72 5.7 -1.8)"/>
+          <ellipse cx="3.5" cy="5.7" rx="4.5" ry="6.5" transform="rotate(144 3.5 5.7)"/>
+          <ellipse cx="-3.5" cy="5.7" rx="4.5" ry="6.5" transform="rotate(216 -3.5 5.7)"/>
+          <ellipse cx="-5.7" cy="-1.8" rx="4.5" ry="6.5" transform="rotate(288 -5.7 -1.8)"/>
+        </g>
+        <circle r="2.5" fill="#f39c12"/>
+      </g>
+
+      <g id="leaf-spray">
+        <path d="M0,0 C-16,-8 -28,-3 -34,10 C-26,7 -14,7 0,0Z" fill="#3b7a4a"/>
+        <path d="M0,0 C16,-8 28,-3 34,10 C26,7 14,7 0,0Z" fill="#4a8f5b"/>
+        <path d="M0,0 C-7,12 -5,24 5,32 C5,20 3,9 0,0Z" fill="#589e6c"/>
+      </g>
+
+      <g id="corner-cluster">
+        <use href="#leaf-spray" x="10" y="18" transform="scale(1.4)"/>
+        <use href="#succulent-rosette" x="0" y="0" transform="translate(30,26) scale(1.6)"/>
+        <use href="#succulent-rosette" x="0" y="0" transform="translate(78,10) scale(1.25) rotate(15)"/>
+        <use href="#succulent-rosette" x="0" y="0" transform="translate(15,66) scale(1.15) rotate(-10)"/>
+        <use href="#rose-bloom" transform="translate(70,58) scale(1.2)"/>
+        <use href="#rose-bloom" transform="translate(112,32) scale(0.95)"/>
+        <use href="#small-blossom" transform="translate(95,70) scale(1.5)"/>
+        <use href="#small-blossom" transform="translate(120,62) scale(1.3)"/>
+        <use href="#small-blossom" transform="translate(50,85) scale(1.4)"/>
+        <use href="#small-blossom" transform="translate(140,15) scale(1.2)"/>
+        <g fill="#f1c40f">
+          <circle cx="135" cy="55" r="3"/>
+          <circle cx="150" cy="30" r="2.2"/>
+          <circle cx="20" cy="95" r="2.2"/>
+          <circle cx="60" cy="20" r="2"/>
+        </g>
+      </g>
+    </defs>
+  </svg>
+
+  <div class="flower-corner top-left">
+    <svg viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg"><use href="#corner-cluster"/></svg>
+  </div>
+  <div class="flower-corner top-right">
+    <svg viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg"><use href="#corner-cluster"/></svg>
+  </div>
+  <div class="flower-corner bottom-left">
+    <svg viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg"><use href="#corner-cluster"/></svg>
+  </div>
+  <div class="flower-corner bottom-right">
+    <svg viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg"><use href="#corner-cluster"/></svg>
+  </div>
+
+  <!-- Top Edge Floral Garland built directly from corner flower elements -->
+  <div class="top-edge-floral">
+    <svg viewBox="0 0 380 110" xmlns="http://www.w3.org/2000/svg">
+      <path d="M40,55 Q190,85 340,55" stroke="#3b7a4a" stroke-width="3" fill="none"/>
+      <!-- Mirrored and centered floral items matching the exact style of corners -->
+      <use href="#leaf-spray" x="125" y="32" transform="scale(1.3)"/>
+      <use href="#leaf-spray" x="225" y="32" transform="scale(-1.3, 1.3)"/>
+      <use href="#succulent-rosette" x="135" y="22" transform="scale(1.4) rotate(12)"/>
+      <use href="#succulent-rosette" x="210" y="22" transform="scale(1.4) rotate(-12)"/>
+      <use href="#rose-bloom" x="172" y="28" transform="scale(1.2)"/>
+      <use href="#rose-bloom" x="138" y="45" transform="scale(0.95)"/>
+      <use href="#rose-bloom" x="208" y="45" transform="scale(0.95)"/>
+      <use href="#small-blossom" x="158" y="55" transform="scale(1.4)"/>
+      <use href="#small-blossom" x="190" y="55" transform="scale(1.4)"/>
+      <use href="#small-blossom" x="110" y="40" transform="scale(1.2)"/>
+      <use href="#small-blossom" x="238" y="40" transform="scale(1.2)"/>
+      <g fill="#f1c40f">
+        <circle cx="174" cy="62" r="2.8"/>
+        <circle cx="152" cy="35" r="2.2"/>
+        <circle cx="196" cy="35" r="2.2"/>
+        <circle cx="125" cy="50" r="2"/>
+        <circle cx="225" cy="50" r="2"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="content">
+
+    <!-- Enhanced Golden Swing with Detailed Lady Artwork -->
+    <div class="swing-wrap">
+      <svg viewBox="0 0 260 240" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f39c12"/>
+            <stop offset="50%" stop-color="#f1c40f"/>
+            <stop offset="100%" stop-color="#b7950b"/>
+          </linearGradient>
+        </defs>
+        <g stroke="url(#goldGrad)" stroke-width="4.5" fill="none" stroke-linecap="round">
+          <path d="M45,25 L45,195"/>
+          <path d="M215,25 L215,195"/>
+          <path d="M25,25 Q130,-12 235,25"/>
+          <path d="M55,195 L205,195"/>
+        </g>
+        <circle cx="130" cy="6" r="6.5" fill="url(#goldGrad)"/>
+
+        <!-- Beaded Strings -->
+        <g stroke="#fff5cc" stroke-width="2" fill="none" opacity="0.9">
+          <path d="M65,28 Q82,65 65,102"/>
+          <path d="M95,26 Q112,65 95,105"/>
+          <path d="M130,24 Q147,68 130,108"/>
+          <path d="M165,26 Q148,65 165,105"/>
+          <path d="M195,28 Q178,65 195,102"/>
+        </g>
+        <g fill="#fff5cc" opacity="0.95">
+          <circle cx="65" cy="65" r="2.8"/><circle cx="65" cy="85" r="2.8"/>
+          <circle cx="95" cy="65" r="2.8"/><circle cx="95" cy="88" r="2.8"/>
+          <circle cx="130" cy="68" r="2.8"/><circle cx="130" cy="90" r="2.8"/>
+          <circle cx="165" cy="65" r="2.8"/><circle cx="165" cy="88" r="2.8"/>
+          <circle cx="195" cy="65" r="2.8"/><circle cx="195" cy="85" r="2.8"/>
+        </g>
+
+        <!-- Swing Seat -->
+        <path d="M75,150 Q130,180 185,150 L185,170 Q130,200 75,170 Z" fill="url(#goldGrad)"/>
+        <path d="M75,150 L75,118 M185,150 L185,118" stroke="url(#goldGrad)" stroke-width="3.5"/>
+
+        <!-- Seated Lady in Traditional Attire -->
+        <g>
+          <path d="M92,118 Q130,108 168,118 L188,176 Q130,195 72,176 Z" fill="#900c3f"/>
+          <path d="M92,118 Q130,108 168,118 L180,162 Q130,178 80,162 Z" fill="#c70039" opacity="0.8"/>
+          <path d="M72,176 Q130,195 188,176 L185,183 Q130,202 75,183 Z" fill="url(#goldGrad)"/>
+          <path d="M110,92 Q130,84 150,92 L154,120 Q130,128 106,120 Z" fill="#581845"/>
+          <path d="M108,98 Q90,106 86,126" stroke="#f5cba7" stroke-width="7.5" fill="none" stroke-linecap="round"/>
+          <path d="M152,98 Q170,106 174,126" stroke="#f5cba7" stroke-width="7.5" fill="none" stroke-linecap="round"/>
+          <circle cx="130" cy="74" r="15.5" fill="#f5cba7"/>
+          <path d="M114,68 Q130,54 146,68 Q148,82 141,92 L119,92 Q112,82 114,68 Z" fill="#2c1d11"/>
+          <path d="M116,64 Q100,88 108,118" stroke="url(#goldGrad)" stroke-width="5.5" fill="none" opacity="0.9"/>
+          <circle cx="130" cy="72" r="1.8" fill="#900c3f"/>
+        </g>
+
+        <g fill="url(#goldGrad)">
+          <circle cx="25" cy="12" r="2.2"/><circle cx="235" cy="14" r="2.2"/>
+          <circle cx="10" cy="50" r="2.2"/><circle cx="250" cy="55" r="2.2"/>
+          <circle cx="18" cy="100" r="2"/><circle cx="242" cy="100" r="2"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="subtitle">पारंपरिक सावन महोत्सव के जश्न में</div>
+    <div class="event-name">आपका हार्दिक स्वागत है</div>
+
+    <div class="script-title">शुभ तीज</div>
+
+    <div class="on-label">दिनांक</div>
+
+<div class="date-pill">
+<span class="editable" contenteditable="true">शनिवार</span>
+<span class="day-badge editable" contenteditable="true">01<sup>st</sup></span>
+<span class="editable" contenteditable="true">अगस्त</span>
+</div>
+
+<div class="year editable" contenteditable="true">2026</div>
+<div class="time editable" contenteditable="true">प्रातः 11:30 बजे से</div>
+
+<div class="place-name editable" contenteditable="true">एच - 401 भाग्यवान अपार्टमेंट</div>
+<div class="address editable" contenteditable="true">मयूर विहार फेज - 1</div>
+
+<div class="divider">✦ ─── ❖ ─── ✦</div>
+
+<div class="footer-note">आपकी उपस्थिति हमारे लिए अत्यंत महत्वपूर्ण है।</div>
+
+</div>
+</div> 
+
+
+<script>
+  // Script to generate cascading floral raindrops / droplets dynamically
+  const rainContainer = document.getElementById('rainContainer');
+  const dropletCount = 25;
+
+  for (let i = 0; i < dropletCount; i++) {
+    const droplet = document.createElement('div');
+    droplet.classList.add('droplet');
+    
+    const leftPos = Math.random() * 100;
+    const animDuration = 3 + Math.random() * 4; 
+    const animDelay = Math.random() * 5;       
+    const scaleVal = 0.5 + Math.random() * 0.8;
+    
+    droplet.style.left = `${leftPos}%`;
+    droplet.style.animationDuration = `${animDuration}s`;
+    droplet.style.animationDelay = `${animDelay}s`;
+    droplet.style.transform = `scale(${scaleVal})`;
+    
+    rainContainer.appendChild(droplet);
+  }
+
+  // Audio Play/Pause Control Script & Autoplay Handling
+  const bgMusic = document.getElementById('bgMusic');
+  const musicToggleBtn = document.getElementById('musicToggleBtn');
+  const btnText = document.getElementById('btnText');
+  let isPlaying = true; // Assume playing since autoplay is requested
+
+  // Attempt to play automatically on load
+  window.addEventListener('DOMContentLoaded', () => {
+    bgMusic.play().then(() => {
+      isPlaying = true;
+      btnText.textContent = "संगीत रोकें";
+      musicToggleBtn.querySelector('span:first-child').textContent = "⏸️";
+    }).catch(error => {
+      // Browsers block autoplay until user interaction occurs
+      console.log("Autoplay blocked by browser policy. Waiting for user interaction.");
+      isPlaying = false;
+      btnText.textContent = "संगीत चलाएं";
+      musicToggleBtn.querySelector('span:first-child').textContent = "🎵";
+    });
+  });
+
+  function toggleMusic() {
+    if (isPlaying) {
+      bgMusic.pause();
+      btnText.textContent = "संगीत चलाएं";
+      musicToggleBtn.querySelector('span:first-child').textContent = "🎵";
+      isPlaying = false;
+    } else {
+      bgMusic.play().then(() => {
+        btnText.textContent = "संगीत रोकें";
+        musicToggleBtn.querySelector('span:first-child').textContent = "⏸️";
+        isPlaying = true;
+      }).catch(error => {
+        console.log("Audio playback error: ", error);
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
