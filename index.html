@@ -8,30 +8,23 @@
 
   * { box-sizing: border-box; }
 
-  body {
-    margin: 0;
-    padding: 30px;
-    background: #041713;
-    display: flex;
-    justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    overflow-x: hidden;
-  }
+ body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 20px;
+  background: #041713;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centers it vertically as well */
+  box-sizing: border-box;
+}
 
-  .card {
-    position: relative;
-    width: 440px;
-    background: radial-gradient(ellipse at center, #0e4a40 0%, #0a3229 70%, #061f19 100%);
-    border: 2px solid #d9b45f;
-    outline: 1px solid #d9b45f;
-    outline-offset: 6px;
-    border-radius: 6px;
-    padding: 42px 32px 48px;
-    overflow: hidden;
-    color: #f3ead9;
-    text-align: center;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-  }
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 440px; /* Restricts maximum expansion */
+  /* keep your remaining card styles */
+}
 
   /* Rain / Droplet Animation Container */
   .rain-container {
